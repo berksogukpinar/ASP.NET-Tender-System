@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="stajModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Ihale">
+          <Key>
+            <PropertyRef Name="IhaleId" />
+          </Key>
+          <Property Name="IhaleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IhaleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="IhaleImage" Type="nvarchar(max)" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="WinnerSupplierId" Type="int" />
+          <Property Name="IhaleLastTime" Type="datetime" />
+          <Property Name="IhaleAdetCins" Type="nvarchar(max)" />
+          <Property Name="IhaleAdet" Type="float" />
+        </EntityType>
+        <EntityType Name="Offer">
+          <Key>
+            <PropertyRef Name="OfferId" />
+          </Key>
+          <Property Name="OfferId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SupplierId" Type="int" Nullable="false" />
+          <Property Name="IhaleId" Type="int" Nullable="false" />
+          <Property Name="OfferDescription" Type="nvarchar(max)" />
+          <Property Name="OfferImage" Type="nvarchar(max)" />
+          <Property Name="OfferPrice" Type="float" />
+          <Property Name="IsActiveOffer" Type="bit" />
+          <Property Name="OfferCurrency" Type="nvarchar" MaxLength="10" />
+          <Property Name="OfferDailyCurrency" Type="float" />
+          <Property Name="OfferTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Supplier">
+          <Key>
+            <PropertyRef Name="SupplierId" />
+          </Key>
+          <Property Name="SupplierId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Token" Type="nvarchar(max)" />
+          <Property Name="Password" Type="nvarchar(max)" />
+          <Property Name="CompanyName" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="Fax" Type="nvarchar(max)" />
+          <Property Name="Phone" Type="nvarchar(max)" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="IsAdmin" Type="bit" />
+          <Property Name="IsSupplierActive" Type="bit" />
+          <Property Name="Username" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_Ihale_Supplier">
+          <End Role="Supplier" Type="Self.Supplier" Multiplicity="0..1" />
+          <End Role="Ihale" Type="Self.Ihale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="SupplierId" />
+            </Principal>
+            <Dependent Role="Ihale">
+              <PropertyRef Name="WinnerSupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Offer_Ihale">
+          <End Role="Ihale" Type="Self.Ihale" Multiplicity="1" />
+          <End Role="Offer" Type="Self.Offer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ihale">
+              <PropertyRef Name="IhaleId" />
+            </Principal>
+            <Dependent Role="Offer">
+              <PropertyRef Name="IhaleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Offer_Supplier">
+          <End Role="Supplier" Type="Self.Supplier" Multiplicity="1" />
+          <End Role="Offer" Type="Self.Offer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="SupplierId" />
+            </Principal>
+            <Dependent Role="Offer">
+              <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="stajModelStoreContainer">
+          <EntitySet Name="Ihale" EntityType="Self.Ihale" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Offer" EntityType="Self.Offer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Ihale_Supplier" Association="Self.FK_Ihale_Supplier">
+            <End Role="Supplier" EntitySet="Supplier" />
+            <End Role="Ihale" EntitySet="Ihale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Offer_Ihale" Association="Self.FK_Offer_Ihale">
+            <End Role="Ihale" EntitySet="Ihale" />
+            <End Role="Offer" EntitySet="Offer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Offer_Supplier" Association="Self.FK_Offer_Supplier">
+            <End Role="Supplier" EntitySet="Supplier" />
+            <End Role="Offer" EntitySet="Offer" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="stajModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Ihale">
+          <Key>
+            <PropertyRef Name="IhaleId" />
+          </Key>
+          <Property Name="IhaleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IhaleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IhaleImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="WinnerSupplierId" Type="Int32" />
+          <Property Name="IhaleLastTime" Type="DateTime" Precision="3" />
+          <Property Name="IhaleAdetCins" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IhaleAdet" Type="Double" />
+          <NavigationProperty Name="Supplier" Relationship="Self.FK_Ihale_Supplier" FromRole="Ihale" ToRole="Supplier" />
+          <NavigationProperty Name="Offer" Relationship="Self.FK_Offer_Ihale" FromRole="Ihale" ToRole="Offer" />
+        </EntityType>
+        <EntityType Name="Offer">
+          <Key>
+            <PropertyRef Name="OfferId" />
+          </Key>
+          <Property Name="OfferId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SupplierId" Type="Int32" Nullable="false" />
+          <Property Name="IhaleId" Type="Int32" Nullable="false" />
+          <Property Name="OfferDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OfferImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OfferPrice" Type="Double" />
+          <Property Name="IsActiveOffer" Type="Boolean" />
+          <Property Name="OfferCurrency" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="OfferDailyCurrency" Type="Double" />
+          <Property Name="OfferTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Ihale" Relationship="Self.FK_Offer_Ihale" FromRole="Offer" ToRole="Ihale" />
+          <NavigationProperty Name="Supplier" Relationship="Self.FK_Offer_Supplier" FromRole="Offer" ToRole="Supplier" />
+        </EntityType>
+        <EntityType Name="Supplier">
+          <Key>
+            <PropertyRef Name="SupplierId" />
+          </Key>
+          <Property Name="SupplierId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Token" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsAdmin" Type="Boolean" />
+          <Property Name="IsSupplierActive" Type="Boolean" />
+          <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Ihale" Relationship="Self.FK_Ihale_Supplier" FromRole="Supplier" ToRole="Ihale" />
+          <NavigationProperty Name="Offer" Relationship="Self.FK_Offer_Supplier" FromRole="Supplier" ToRole="Offer" />
+        </EntityType>
+        <Association Name="FK_Ihale_Supplier">
+          <End Role="Supplier" Type="Self.Supplier" Multiplicity="0..1" />
+          <End Role="Ihale" Type="Self.Ihale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="SupplierId" />
+            </Principal>
+            <Dependent Role="Ihale">
+              <PropertyRef Name="WinnerSupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Offer_Ihale">
+          <End Role="Ihale" Type="Self.Ihale" Multiplicity="1" />
+          <End Role="Offer" Type="Self.Offer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ihale">
+              <PropertyRef Name="IhaleId" />
+            </Principal>
+            <Dependent Role="Offer">
+              <PropertyRef Name="IhaleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Offer_Supplier">
+          <End Role="Supplier" Type="Self.Supplier" Multiplicity="1" />
+          <End Role="Offer" Type="Self.Offer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="SupplierId" />
+            </Principal>
+            <Dependent Role="Offer">
+              <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ihaleEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Ihale" EntityType="Self.Ihale" />
+          <EntitySet Name="Offer" EntityType="Self.Offer" />
+          <EntitySet Name="Supplier" EntityType="Self.Supplier" />
+          <AssociationSet Name="FK_Ihale_Supplier" Association="Self.FK_Ihale_Supplier">
+            <End Role="Supplier" EntitySet="Supplier" />
+            <End Role="Ihale" EntitySet="Ihale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Offer_Ihale" Association="Self.FK_Offer_Ihale">
+            <End Role="Ihale" EntitySet="Ihale" />
+            <End Role="Offer" EntitySet="Offer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Offer_Supplier" Association="Self.FK_Offer_Supplier">
+            <End Role="Supplier" EntitySet="Supplier" />
+            <End Role="Offer" EntitySet="Offer" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="stajModelStoreContainer" CdmEntityContainer="ihaleEntities">
+          <EntitySetMapping Name="Ihale">
+            <EntityTypeMapping TypeName="stajModel.Ihale">
+              <MappingFragment StoreEntitySet="Ihale">
+                <ScalarProperty Name="IhaleId" ColumnName="IhaleId" />
+                <ScalarProperty Name="IhaleName" ColumnName="IhaleName" />
+                <ScalarProperty Name="IhaleImage" ColumnName="IhaleImage" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="WinnerSupplierId" ColumnName="WinnerSupplierId" />
+                <ScalarProperty Name="IhaleLastTime" ColumnName="IhaleLastTime" />
+                <ScalarProperty Name="IhaleAdetCins" ColumnName="IhaleAdetCins" />
+                <ScalarProperty Name="IhaleAdet" ColumnName="IhaleAdet" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Offer">
+            <EntityTypeMapping TypeName="stajModel.Offer">
+              <MappingFragment StoreEntitySet="Offer">
+                <ScalarProperty Name="OfferId" ColumnName="OfferId" />
+                <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+                <ScalarProperty Name="IhaleId" ColumnName="IhaleId" />
+                <ScalarProperty Name="OfferDescription" ColumnName="OfferDescription" />
+                <ScalarProperty Name="OfferImage" ColumnName="OfferImage" />
+                <ScalarProperty Name="OfferPrice" ColumnName="OfferPrice" />
+                <ScalarProperty Name="IsActiveOffer" ColumnName="IsActiveOffer" />
+                <ScalarProperty Name="OfferCurrency" ColumnName="OfferCurrency" />
+                <ScalarProperty Name="OfferDailyCurrency" ColumnName="OfferDailyCurrency" />
+                <ScalarProperty Name="OfferTime" ColumnName="OfferTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Supplier">
+            <EntityTypeMapping TypeName="stajModel.Supplier">
+              <MappingFragment StoreEntitySet="Supplier">
+                <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+                <ScalarProperty Name="IsSupplierActive" ColumnName="IsSupplierActive" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

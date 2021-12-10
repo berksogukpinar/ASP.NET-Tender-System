@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="İhaleProjectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Ihale">
+    <Key>
+      <PropertyRef Name="IhaleId" />
+    </Key>
+    <Property Name="IhaleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IhaleName" Type="nvarchar" MaxLength="50" />
+    <Property Name="IhaleImage" Type="nvarchar(max)" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="WinnerSupplierId" Type="int" />
+    <Property Name="IhaleLastTime" Type="datetime" />
+    <Property Name="IhaleAdetCins" Type="nvarchar(max)" />
+    <Property Name="IhaleAdet" Type="float" />
+  </EntityType>
+  <EntityType Name="Offer">
+    <Key>
+      <PropertyRef Name="OfferId" />
+    </Key>
+    <Property Name="OfferId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SupplierId" Type="int" Nullable="false" />
+    <Property Name="IhaleId" Type="int" Nullable="false" />
+    <Property Name="OfferDescription" Type="nvarchar(max)" />
+    <Property Name="OfferImage" Type="nvarchar(max)" />
+    <Property Name="OfferPrice" Type="float" />
+    <Property Name="IsActiveOffer" Type="bit" />
+    <Property Name="OfferCurrency" Type="nvarchar" MaxLength="10" />
+    <Property Name="OfferDailyCurrency" Type="float" />
+    <Property Name="OfferTime" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Supplier">
+    <Key>
+      <PropertyRef Name="SupplierId" />
+    </Key>
+    <Property Name="SupplierId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Token" Type="nvarchar(max)" />
+    <Property Name="Password" Type="nvarchar(max)" />
+    <Property Name="CompanyName" Type="nvarchar(max)" />
+    <Property Name="Email" Type="nvarchar(max)" />
+    <Property Name="Fax" Type="nvarchar(max)" />
+    <Property Name="Phone" Type="nvarchar(max)" />
+    <Property Name="Address" Type="nvarchar(max)" />
+    <Property Name="IsAdmin" Type="bit" />
+    <Property Name="IsSupplierActive" Type="bit" />
+  </EntityType>
+  <Association Name="FK_Ihale_Supplier">
+    <End Role="Supplier" Type="Self.Supplier" Multiplicity="0..1" />
+    <End Role="Ihale" Type="Self.Ihale" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Supplier">
+        <PropertyRef Name="SupplierId" />
+      </Principal>
+      <Dependent Role="Ihale">
+        <PropertyRef Name="WinnerSupplierId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Offer_Ihale">
+    <End Role="Ihale" Type="Self.Ihale" Multiplicity="1" />
+    <End Role="Offer" Type="Self.Offer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ihale">
+        <PropertyRef Name="IhaleId" />
+      </Principal>
+      <Dependent Role="Offer">
+        <PropertyRef Name="IhaleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Offer_Supplier">
+    <End Role="Supplier" Type="Self.Supplier" Multiplicity="1" />
+    <End Role="Offer" Type="Self.Offer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Supplier">
+        <PropertyRef Name="SupplierId" />
+      </Principal>
+      <Dependent Role="Offer">
+        <PropertyRef Name="SupplierId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="İhaleProjectModelStoreContainer">
+    <EntitySet Name="Ihale" EntityType="Self.Ihale" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Offer" EntityType="Self.Offer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Ihale_Supplier" Association="Self.FK_Ihale_Supplier">
+      <End Role="Supplier" EntitySet="Supplier" />
+      <End Role="Ihale" EntitySet="Ihale" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Offer_Ihale" Association="Self.FK_Offer_Ihale">
+      <End Role="Ihale" EntitySet="Ihale" />
+      <End Role="Offer" EntitySet="Offer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Offer_Supplier" Association="Self.FK_Offer_Supplier">
+      <End Role="Supplier" EntitySet="Supplier" />
+      <End Role="Offer" EntitySet="Offer" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

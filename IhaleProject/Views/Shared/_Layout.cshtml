@@ -1,0 +1,362 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - ASP.NET Uygulamam</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+<style>
+
+
+    th {
+        margin: 10px;
+        padding: 10px;
+    }
+
+    td {
+        margin: 10px;
+        padding: 10px;
+    }
+
+    tr {
+        margin: 10px;
+        padding: 10px;
+    }
+
+    textarea {
+        resize: none;
+    }
+
+    .form-label {
+        font-size: 12px;
+        color: #5e9bfc;
+        margin: 0;
+        display: block;
+        opacity: 1;
+        -webkit-transition: .333s ease top, .333s ease opacity;
+        transition: .333s ease top, .333s ease opacity;
+    }
+
+    .form-control {
+        border-radius: 0;
+        border-color: #ccc;
+        border-width: 0 0 2px 0;
+        border-style: none none solid none;
+        box-shadow: none;
+        text-align: center
+    }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #5e9bfc;
+        }
+
+    .js-hide-label {
+        opacity: 0;
+    }
+
+    .js-unhighlight-label {
+        color: #999
+    }
+
+    .btn-start-order {
+        background: 0 0 #ffffff;
+        border: 1px solid #2f323a;
+        border-radius: 3px;
+        color: #2f323a;
+        font-family: "Raleway", sans-serif;
+        font-size: 16px;
+        line-height: inherit;
+        margin: 30px 0;
+        padding: 10px 50px;
+        text-transform: uppercase;
+        transition: all 0.25s ease 0s;
+    }
+
+    .btn-start-order2 {
+        background: 0 0 #ffffff;
+        border: 1px solid #2f323a;
+        border-radius: 3px;
+        color: #2f323a;
+        font-family: "Raleway", sans-serif;
+        font-size: 16px;
+        line-height: inherit;
+        margin: auto;
+        text-align: center;
+        padding: 10px 50px;
+        text-transform: uppercase;
+        transition: all 0.25s ease 0s;
+    }
+
+
+    .btn-start-order3 {
+        background: 0 0 #ffffff;
+        border: 1px solid #2f323a;
+        border-radius: 4px;
+        color: #2f323a;
+        font-family: "Raleway", sans-serif;
+        font-size: 13px;
+        line-height: inherit;
+        margin: 1px 2px 1px 2px;
+        text-align: center;
+        padding: 10px 10px 10px 10px;
+        text-transform: uppercase;
+        transition: all 0.25s ease 0s;
+    }
+
+
+
+    .btn-start-order4 {
+        background: 0 0 #ffffff;
+        border: 1px solid #2f323a;
+        border-radius: 4px;
+        color: #2f323a;
+        font-family: "Raleway", sans-serif;
+        font-size: 12px;
+        line-height: inherit;
+        margin: 1px 1px 1px 1px;
+        text-align: center;
+        padding: 1px 5px 2px 5px;
+        text-transform: uppercase;
+        transition: all 0.25s ease 0s;
+    }
+
+        .btn-start-order3:hover, .btn-start-order3:active, .btn-start-order3:focus {
+            border-color: #5e9bfc;
+            color: #5e9bfc;
+        }
+
+    .btn-start-order:hover, .btn-start-order:active, .btn-start-order:focus {
+        border-color: #5e9bfc;
+        color: #5e9bfc;
+    }
+
+    #name {
+        text-align: center;
+        margin: auto;
+    }
+
+
+    #message {
+        text-align: center;
+        margin: auto;
+    }
+
+
+    .styled-table {
+        border-collapse: collapse;
+        border-radius: 20px;
+        margin: auto;
+        border-style: hidden;
+        font-size: 0.9em;
+        font-family: sans-serif;
+        min-width: 400px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+
+
+        .styled-table thead tr {
+            background-color: #009879;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        .styled-table th,
+        .styled-table td {
+            padding: 12px 15px;
+        }
+
+    table th:first-child {
+        border-radius: 10px 0 0 0;
+        -moz-border-radius: 6px 0 0 0;
+        -webkit-border-radius: 6px 0 0 0;
+    }
+
+    table th:last-child {
+        border-radius: 0 10px 0 0;
+        -moz-border-radius: 0 6px 0 0;
+        -webkit-border-radius: 0 6px 0 0;
+    }
+
+
+        .styled-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+
+        }
+
+
+            .styled-table tbody tr{
+                background-color: #f3f3f3;
+            }
+
+    .padding {
+        padding: 3rem !important
+    }
+
+    .user-card-full {
+        overflow: hidden
+    }
+
+    .card1 {
+        border-radius: 5px;
+        -webkit-box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+        box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+        border: none;
+        margin-bottom: 30px
+    }
+
+    .m-r-0 {
+        margin-right: 0px
+    }
+
+    .m-l-0 {
+        margin-left: 0px
+    }
+
+    .user-card-full .user-profile {
+        border-radius: 5px 0 0 5px
+    }
+
+    .bg-c-lite-green {
+        background: -webkit-gradient(linear, left top, right top, from(#f29263), to(#ee5a6f));
+        background: linear-gradient(to right, #ee5a6f, #f29263)
+    }
+
+    .user-profile {
+        padding: 20px 0
+    }
+
+    .card-block {
+        padding: 1.25rem
+    }
+
+    .m-b-25 {
+        margin-bottom: 25px
+    }
+
+    .img-radius {
+        border-radius: 5px
+    }
+
+    h6 {
+        font-size: 14px
+    }
+
+    .card .card-block p {
+        line-height: 25px
+    }
+
+
+    .card-block {
+        padding: 1.25rem
+    }
+
+    .b-b-default {
+        border-bottom: 1px solid #e0e0e0
+    }
+
+    .m-b-20 {
+        margin-bottom: 20px
+    }
+
+    .p-b-5 {
+        padding-bottom: 5px !important
+    }
+
+    .card1 .card-block p {
+        line-height: 25px
+    }
+
+    .m-b-10 {
+        margin-bottom: 10px
+    }
+
+    .text-muted {
+        color: #919aa3 !important
+    }
+
+    .b-b-default {
+        border-bottom: 1px solid #e0e0e0
+    }
+
+    .f-w-600 {
+        font-weight: 600
+    }
+
+    .m-b-20 {
+        margin-bottom: 20px
+    }
+
+    .m-t-40 {
+        margin-top: 20px
+    }
+
+    .p-b-5 {
+        padding-bottom: 5px !important
+    }
+
+    .m-b-10 {
+        margin-bottom: 10px
+    }
+
+    .m-t-40 {
+        margin-top: 20px
+    }
+
+    .user-card-full .social-link li {
+        display: inline-block
+    }
+
+        .user-card-full .social-link li a {
+            font-size: 20px;
+            margin: 0 10px 0 0;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out
+        }
+</style>
+
+</head>
+<body style="background: #8e9eab; background: linear-gradient(to right, #8e9eab, #eef2f3); ">
+    <div class="navbar navbar-inverse navbar-static-top ">
+
+
+            <div class="navbar-collapse collapse " style="background-color:white;">
+                
+                <ul class="nav navbar-nav navMenu ">
+                    <li style="margin:0px 0px 0px 50px;"><a href="https://www.dinizadient.com/"><img src="~/Uploads/diniz.png" width="150" style="padding:10px"></a> </li>
+                    @if ((Session["token"] != null || Session["username"] != null) && Session["supplier_id"] != null && Session["pwd"] != null && Session["isAdmin"] == null)
+                    {
+                        <li>@Html.ActionLink("Profil", "Profile", "Home", null, new { @style = "margin:20px 0px 0px 0px;font-size:20px;color:black" })</li>
+                        if (Session["isActive"] != null && Session["WinnerSupplierId"] == null)
+                        {
+                            <li>@Html.ActionLink("Teklif Yap", "Offer", "Home", null, new { @style = "margin:20px 0px 0px 0px;font-size:20px;color:black" })</li>
+
+                        }
+                        <li>@Html.ActionLink("İletişim", "Contact", "Home", null, new { @style = "margin:20px 0px 0px 0px;font-size:20px;color:black" })</li>
+                        <li>@Html.ActionLink("Çıkış Yap", "Logout", "Home", null, new { @style = "margin:20px 0px 0px 0px;font-size:20px;color:black" })</li>
+                    }
+                    @if (Session["isAdmin"] != null)
+                    {
+                        <li>@Html.ActionLink("İhaleler", "AdminProfile", "Home", null, new { @style = "margin:20px 0px 0px 0px;font-size:20px;color:black" })</li>
+                        <li>@Html.ActionLink("Tedarikçiler", "AllSuppliers", "Home", new { supplierCondition = "all", filter = "none" }, new { @style = "margin:20px 0px 0px 0px;font-size:20px;color:black" })</li>
+                        <li>@Html.ActionLink("Çıkış Yap", "Logout", "Home", null, new { @style = "margin:20px 0px 0px 0px;font-size:20px;color:black;margin:right" })</li>
+
+
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

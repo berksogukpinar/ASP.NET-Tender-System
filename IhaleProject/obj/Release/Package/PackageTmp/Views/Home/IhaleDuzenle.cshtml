@@ -1,0 +1,62 @@
+﻿@model IhaleProject.Models.Ihale
+@using IhaleProject.Models;
+@{
+    ViewBag.Title = "IhaleDuzenle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="row" style="margin:auto">
+        <h2 style="margin-bottom:40px;text-align:center">İhale Düzenle</h2>
+
+        @using (Html.BeginForm("DuzenleIhale", "Home", FormMethod.Post, new { @class = "formClass" }))
+        {
+            @Html.AntiForgeryToken()
+
+            if (ViewData["editlenecekIhale"] != null && (Session["username"] != null || Session["token"] != null))
+            {
+                foreach (var item1 in ViewData["editlenecekIhale"] as List<Ihale>)
+                {
+                    <input type="hidden" value="@item1.IhaleId" name="IhaleId" />
+                    <div class="form-group">
+                        <label class="form-label" id="name" for="IhaleName">Ihale Ismi</label>
+                        <input pattern=".{3,50}" title="En fazla 50 karakter" class="form-control" id="name" type="text" value="@item1.IhaleName" name="IhaleName" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" id="name" for="IhaleName">Miktar</label>
+                        <input pattern=".{3,12}" title="En fazla 20 karakter" class="form-control" id="name"  min="1" type="number" value="@item1.IhaleAdet" name="IhaleAdet" />
+                    </div>
+
+                    <div class="form-group text-center">
+                        <label class="form-label" id="name" for="IhaleName">Cins</label><br />
+                        <select id="cins" name="IhaleAdetCins">
+                            <option @(item1.IhaleAdetCins == "Adet" ? "selected" : "" )  value="Adet">Adet</option>
+                            <option @(item1.IhaleAdetCins == "Metre" ? "selected" : "") value="Metre">Metre</option>
+                            <option @(item1.IhaleAdetCins == "Santimetre"  ? "selected" : "") value="Santimetre">Santimetre</option>
+                            <option @(item1.IhaleAdetCins == "Kg" ? "selected" : "" ) value="Kg">Kilogram</option>
+                            <option @(item1.IhaleAdetCins == "Gram"  ? "selected" : "" ) value="Gram">Gram</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="isActive" id="name" class="form-label">Aktiflik durumu</label>
+                        <input class="form-control" id="name" name ="IsActive" type="checkbox" @( item1.IsActive == true ? "checked" : "" ) />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="IhaleLastTime" id="name" class="form-label">Ihalenin Sonlanacağı Tarih : @item1.IhaleLastTime </label> <br />
+                        <input class="form-control" id="name" type="datetime-local" value="@item1.IhaleLastTime" name="IhaleLastTime" />
+                    </div>
+                    <div class="form-group">
+                        <div class="text-center">
+
+                            <button class="btn btn-start-order2" type="submit"> Ihaleyi Düzenle</button>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>
+
+

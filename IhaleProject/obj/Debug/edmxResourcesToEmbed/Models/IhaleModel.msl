@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="İhaleProjectModelStoreContainer" CdmEntityContainer="ihaleEntities">
+    <EntitySetMapping Name="Offer">
+      <EntityTypeMapping TypeName="İhaleProjectModel.Offer">
+        <MappingFragment StoreEntitySet="Offer">
+          <ScalarProperty Name="OfferId" ColumnName="OfferId" />
+          <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+          <ScalarProperty Name="IhaleId" ColumnName="IhaleId" />
+          <ScalarProperty Name="OfferDescription" ColumnName="OfferDescription" />
+          <ScalarProperty Name="OfferImage" ColumnName="OfferImage" />
+          <ScalarProperty Name="OfferPrice" ColumnName="OfferPrice" />
+          <ScalarProperty Name="IsActiveOffer" ColumnName="IsActiveOffer" />
+          <ScalarProperty Name="OfferCurrency" ColumnName="OfferCurrency" />
+          <ScalarProperty Name="OfferDailyCurrency" ColumnName="OfferDailyCurrency" />
+          <ScalarProperty Name="OfferTime" ColumnName="OfferTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Ihale">
+      <EntityTypeMapping TypeName="İhaleProjectModel.Ihale">
+        <MappingFragment StoreEntitySet="Ihale">
+          <ScalarProperty Name="IhaleAdet" ColumnName="IhaleAdet" />
+          <ScalarProperty Name="IhaleAdetCins" ColumnName="IhaleAdetCins" />
+          <ScalarProperty Name="IhaleLastTime" ColumnName="IhaleLastTime" />
+          <ScalarProperty Name="WinnerSupplierId" ColumnName="WinnerSupplierId" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IhaleImage" ColumnName="IhaleImage" />
+          <ScalarProperty Name="IhaleName" ColumnName="IhaleName" />
+          <ScalarProperty Name="IhaleId" ColumnName="IhaleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Supplier">
+      <EntityTypeMapping TypeName="İhaleProjectModel.Supplier">
+        <MappingFragment StoreEntitySet="Supplier">
+          <ScalarProperty Name="IsSupplierActive" ColumnName="IsSupplierActive" />
+          <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Fax" ColumnName="Fax" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Token" ColumnName="Token" />
+          <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="İhaleProjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Offer">
+    <Key>
+      <PropertyRef Name="OfferId" />
+    </Key>
+    <Property Name="OfferId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SupplierId" Type="Int32" Nullable="false" />
+    <Property Name="IhaleId" Type="Int32" Nullable="false" />
+    <Property Name="OfferDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="OfferImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="OfferPrice" Type="Double" />
+    <Property Name="IsActiveOffer" Type="Boolean" />
+    <Property Name="OfferCurrency" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="OfferDailyCurrency" Type="Double" />
+    <Property Name="OfferTime" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Ihale" Relationship="İhaleProjectModel.FK_Offer_Ihale" FromRole="Offer" ToRole="Ihale" />
+    <NavigationProperty Name="Supplier" Relationship="İhaleProjectModel.FK_Offer_Supplier" FromRole="Offer" ToRole="Supplier" />
+  </EntityType>
+  <EntityContainer Name="ihaleEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Offer" EntityType="Self.Offer" />
+    <EntitySet Name="Ihale" EntityType="İhaleProjectModel.Ihale" />
+    <AssociationSet Name="FK_Offer_Ihale" Association="İhaleProjectModel.FK_Offer_Ihale">
+      <End Role="Ihale" EntitySet="Ihale" />
+      <End Role="Offer" EntitySet="Offer" />
+    </AssociationSet>
+    <EntitySet Name="Supplier" EntityType="İhaleProjectModel.Supplier" />
+    <AssociationSet Name="FK_Ihale_Supplier" Association="İhaleProjectModel.FK_Ihale_Supplier">
+      <End Role="Supplier" EntitySet="Supplier" />
+      <End Role="Ihale" EntitySet="Ihale" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Offer_Supplier" Association="İhaleProjectModel.FK_Offer_Supplier">
+      <End Role="Supplier" EntitySet="Supplier" />
+      <End Role="Offer" EntitySet="Offer" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Ihale">
+    <Key>
+      <PropertyRef Name="IhaleId" />
+    </Key>
+    <Property Name="IhaleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IhaleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IhaleImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="WinnerSupplierId" Type="Int32" />
+    <Property Name="IhaleLastTime" Type="DateTime" Precision="3" />
+    <Property Name="IhaleAdetCins" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="IhaleAdet" Type="Double" />
+    <NavigationProperty Name="Offer" Relationship="İhaleProjectModel.FK_Offer_Ihale" FromRole="Ihale" ToRole="Offer" />
+    <NavigationProperty Name="Supplier" Relationship="İhaleProjectModel.FK_Ihale_Supplier" FromRole="Ihale" ToRole="Supplier" />
+  </EntityType>
+  <Association Name="FK_Offer_Ihale">
+    <End Type="İhaleProjectModel.Ihale" Role="Ihale" Multiplicity="1" />
+    <End Type="İhaleProjectModel.Offer" Role="Offer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ihale">
+        <PropertyRef Name="IhaleId" />
+      </Principal>
+      <Dependent Role="Offer">
+        <PropertyRef Name="IhaleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Supplier">
+    <Key>
+      <PropertyRef Name="SupplierId" />
+    </Key>
+    <Property Name="SupplierId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Token" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CompanyName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Fax" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="IsAdmin" Type="Boolean" />
+    <Property Name="IsSupplierActive" Type="Boolean" />
+    <NavigationProperty Name="Ihale" Relationship="İhaleProjectModel.FK_Ihale_Supplier" FromRole="Supplier" ToRole="Ihale" />
+    <NavigationProperty Name="Offer" Relationship="İhaleProjectModel.FK_Offer_Supplier" FromRole="Supplier" ToRole="Offer" />
+  </EntityType>
+  <Association Name="FK_Ihale_Supplier">
+    <End Type="İhaleProjectModel.Supplier" Role="Supplier" Multiplicity="0..1" />
+    <End Type="İhaleProjectModel.Ihale" Role="Ihale" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Supplier">
+        <PropertyRef Name="SupplierId" />
+      </Principal>
+      <Dependent Role="Ihale">
+        <PropertyRef Name="WinnerSupplierId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Offer_Supplier">
+    <End Type="İhaleProjectModel.Supplier" Role="Supplier" Multiplicity="1" />
+    <End Type="İhaleProjectModel.Offer" Role="Offer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Supplier">
+        <PropertyRef Name="SupplierId" />
+      </Principal>
+      <Dependent Role="Offer">
+        <PropertyRef Name="SupplierId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

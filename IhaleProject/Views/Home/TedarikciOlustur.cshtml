@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "TedarikciOlustur";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="text-center" style="margin-bottom:40px;">
+    <h2 style="color:red;text-align:center">@TempData["message"]</h2>
+</div>
+
+@using (Html.BeginForm("TedarikciOlustur", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <div class="container" style="text-align:center;margin:20px;20px;">
+            <div class="form-group">
+                <label class="form-label">Şirket İsmi</label> <br />
+                <input required pattern=".{3,50}" title="En fazla 50 karakter"  style="text-align: center; align-items: center; margin: auto; " class="form-control" type="text" name="CompanyName" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Şirket Email</label> <br />
+                <input required pattern=".{3,50}" title="En fazla 50 karakter" style="text-align: center; align-items: center; margin: auto; " class="form-control" type="email" name="Email" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Şirket Adres</label> <br />
+                <input required pattern=".{3,50}" title="En fazla 50 karakter" style="text-align: center; align-items: center; margin: auto; " class="form-control" type="text" name="Address" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Şirket Telefon</label> <br />
+                <input required pattern=".{3,50}" title="En fazla 50 karakter" style="text-align: center; align-items: center; margin: auto; " class="form-control" type="text" name="Phone" />
+            </div>
+            <div class="form-group">
+                <label class="form-label">Şirket Fax</label> <br />
+                <input pattern=".{3,50}" title="En fazla 50 karakter" style="text-align: center; align-items: center; margin: auto; " class="form-control" type="text" name="Fax" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Şirket Kullanıcı Adı</label> <br />
+                <input required pattern=".{8,20}" title="8-20 karakter" style="text-align: center; align-items: center; margin: auto; " class="form-control" type="text" name="Username" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Şirkete ait Şifre</label> <br />
+                <input id="password"  pattern=".{8,20}" title="8-20 karakter" required style="text-align: center; align-items: center; margin: auto; " class="form-control" type="password" name="Password" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Şifre tekrar</label> <br />
+                <input id="confirm_password" required style="text-align: center; align-items: center; margin: auto; " class="form-control" type="password" />
+            </div>
+
+            <div class="form-group">
+                <div class="text-center">
+                    <button style="text-align: center; align-items: center; margin: auto; " type="submit" class="btn btn-start-order">Tedarikçi oluştur</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<script>
+
+    var password = document.getElementById("password")
+    var confirm_password = document.getElementById("confirm_password");
+
+    function validatePassword() {
+        if (password.value != confirm_password.value) {
+            confirm_password.setCustomValidity("Parolalar uyuşmuyor");
+        } else {
+            confirm_password.setCustomValidity('');
+        }
+    }
+    password.onchange = validatePassword;
+    confirm_password.onkeyup = validatePassword;
+</script>

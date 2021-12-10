@@ -1,0 +1,57 @@
+﻿@model IhaleProject.Models.Supplier
+@using IhaleProject.Models;
+@{
+    ViewBag.Title = "TedarikciDuzenle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="row" style="margin:auto">
+        <h2 style="margin-bottom:40px;text-align:center">Tedarikçi Düzenle</h2>
+        @using (Html.BeginForm("TedarikciDuzenle", "Home", FormMethod.Post, new { @class = "formClass" }))
+        {
+            @Html.AntiForgeryToken()
+
+            if (ViewData["editlenecekTedarikci"] != null)
+            {
+                foreach (var item in ViewData["editlenecekTedarikci"] as List<Supplier>)
+                {
+                    <input type="hidden" value="@item.SupplierId" name="SupplierId" />
+                    <div class="form-group">
+                        <label class="form-label" id="name" for="CompanyName">Şirket İsmi</label>
+                        <input pattern=".{3,50}" title="En fazla 50 karakter" class="form-control" id="name" type="text" value="@item.CompanyName" name="CompanyName" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" id="name" for="Email">Şirket Email</label>
+                        <input pattern=".{3,50}" title="En fazla 50 karakter" class="form-control" id="name" type="text" value="@item.Email" name="Email" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" id="name" for="Address">Şirket Adres</label>
+                        <input pattern=".{3,150}" title="En fazla 50 karakter" class="form-control" id="name" type="text" value="@item.Address" name="Address" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" id="name" for="Şirket Telefon">Telefon</label>
+                        <input pattern=".{3,50}" title="En fazla 50 karakter" class="form-control" id="name" type="text" value="@item.Phone" name="Phone" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" id="name" for="Fax">Şirket Fax</label>
+                        <input pattern=".{3,50}" title="En fazla 50 karakter" class="form-control" id="name" type="text" value="@item.Fax" name="Fax" />
+                    </div>
+
+                    <div class="form-group">
+                        <div class="text-center">
+
+                            <button class="btn btn-start-order2" type="submit"> Tedarikçiyi Düzenle</button>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>
+
+
+

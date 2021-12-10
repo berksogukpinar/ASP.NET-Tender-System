@@ -1,0 +1,53 @@
+           using (DovizKurlari2.Models.DovizKurlari2Entities db = new DovizKurlari2Entities())
+            {
+                if(db.Dolar.Count() > 0)
+                {
+
+                }
+                else
+                {
+
+                    Dolar d = new Dolar();
+                    d.aliskur = "2.3";
+                    d.isim = "dolar";
+
+                    db.Dolar.Add(d);
+                    db.SaveChanges();
+                }
+
+            }
+
+-------------------------------------------
+
+
+            using (DovizKurlari2.Models.DovizKurlari2Entities db = new DovizKurlari2Entities())
+            {
+                var liste = db.Dolar.ToList();
+            }
+
+--------------------------------------------------------------------
+@{
+   test2.Database1Entities db = new test2.Database1Entities();
+}
+@using (Html.BeginForm())
+{
+<table border="1">
+<thead>
+    <tr>
+        <th>Image</th>
+        <th>First name</th>
+        <th>Last name</th>
+    </tr>
+</thead>
+<tbody>
+    @foreach (var item in db.tblAs)
+    {
+        <tr>
+            <td><img src="~/images/@item.imageUrl" width="100" height="100" /></td>
+            <td>@item.fname</td>
+            <td>@item.lname</td>
+        </tr>
+    }
+</tbody>
+</table>
+}

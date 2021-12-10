@@ -1,0 +1,160 @@
+﻿@model IhaleProject.Models.Ihale
+@using IhaleProject.Models;
+
+@{
+    ViewBag.Title = "IhaleDetaylar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div>
+
+    @if (ViewData["ihale"] != null)
+    {
+        <h1 style="text-align:center">İhale bilgileri</h1>
+        <h2 style="text-align:center"> Toplam teklif sayısı : @(ViewData["teklifSayisi"]?.ToString())</h2>
+        <table class="styled-table" style="margin-bottom: 25px; margin-top: 20px; background-color: #95d17a; ">
+            <tr style="background-color: #97A3C2">
+                <th>İhale ismi</th>
+                <th>Miktar</th>
+                <th>Gönderdiğiniz döküman</th>
+                <th>Kazanan tedarikçi</th>
+                <th>İhale bitiş zamanı</th>
+                <th>Aktiflik durumu</th>
+                <th>Aktiflik Değiştir</th>
+            </tr>
+
+            @foreach (var item in ViewData["ihale"] as List<Ihale>)
+            {
+                <tr>
+                    <td>@item.IhaleName</td>
+                    <td>@item.IhaleAdet @item.IhaleAdetCins</td>
+                    <td>
+
+                        @if (item.IhaleImage != null)
+                        {
+                            <a href="@item.IhaleImage">İndir</a>
+                        }
+                        else
+                        {
+                            <p>Herhangi bir döküman yüklenmedi</p>
+                        }
+                    </td>
+                    <td>
+
+                        @if (item.WinnerSupplierId == null)
+                        {
+                            <p>Henüz kazanan yok</p>
+                        }
+
+                        @if (item.WinnerSupplierId != null)
+                        {
+                            using (Html.BeginForm("ChangeWinner", "Home", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <div class="form-group" style="width:100%;text-align:center">
+                                    <label>@item.Supplier.CompanyName</label>
+                                    <button class="btn btn-start-order4" style="color:red">X</button>
+                                </div>
+                                <input type="hidden" value="@item.IhaleId" name="IhaleId" />
+                            }
+                        }
+                    </td>
+
+                    <td>
+
+                        @if (item.IhaleLastTime != null)
+                        {
+                            <p>@item.IhaleLastTime</p>
+                        }
+                        else
+                        {
+                            <p>Bir tarih belirlenmedi</p>
+                        }
+                </td>
+                <td>@(item.IsActive==true ? "Aktif" : "Aktif Değil")</td>
+                <td>
+                    @using (Html.BeginForm("IhaleSil", "Home", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" value="@item.IhaleId" name="ihaleId" />
+                        <button class="btn btn-start-order4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
+                                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
+                            </svg>
+                        </button>
+                    }
+                </td>
+            </tr>
+        }
+        </table>
+        <hr />
+        <h3 style="text-align:center">İhaleye gelen teklifler</h3>
+
+        if (ViewData["teklifler"] != null)
+        {
+            <table class="styled-table">
+                <tr style="background-color: #97A3C2;">
+                    <th>Şirket Adı</th>
+                    <th>Teklif Açıklaması</th>
+                    <th>Teklif Fiyatı</th>
+                    <th>Birim Fiyatı</th>
+                    <th>Gönderilen Döküman</th>
+                    <th>Şirket Mail</th>
+                    <th>Şirket Telefon</th>
+                    <th>Değerlendir</th>
+                </tr>
+
+                @foreach (var item in ViewData["teklifler"] as List<Offer>)
+                {
+                    <tr>
+                        <td style="font-family:Verdana; font-size:12px;">@item.Supplier.CompanyName</td>
+                        <td style="font-family:Verdana; font-size:12px;">@item.OfferDescription</td>
+                        <td style="font-family:Verdana; font-size:12px;">@item.OfferPrice @item.OfferCurrency</td>
+                        <td style="font-family:Verdana; font-size:12px;">
+                            @{
+                                var a = item.OfferPrice;
+                                var b = item.Ihale.IhaleAdet;
+                                var c = a / b;
+                                <p>@c</p>
+                            }
+                        </td>
+                        <td style="font-family:Verdana; font-size:12px;">
+
+                            @if (item.OfferImage != null)
+                            {
+                                <a href="~/Uploads/@item.OfferImage">İndir</a>
+                            }
+                            else
+                            {
+                                <p>Döküman gönderilmedi.</p>
+                            }
+                        </td>
+                        <td style="font-family:Verdana; font-size:12px;">@item.Supplier.Email</td>
+                        <td style="font-family:Verdana; font-size:12px;">@item.Supplier.Phone</td>
+                        <td>
+
+                            @if (item.Ihale.WinnerSupplierId == null && item.Ihale.IsActive == true)
+                            {
+                                using (Html.BeginForm("AcceptOffer", "Home", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <div class="form-group">
+                                        <input type="hidden" name="SupplierId" value="@item.SupplierId" />
+                                        <input type="hidden" name="IhaleId" value="@item.IhaleId" />
+
+                                        <button class="btn btn-start-order3" style="color:green" type="submit">Kabul et</button>
+                                    </div>
+                                }
+                            }
+                            else if (item.Ihale.IsActive == false || item.Ihale.WinnerSupplierId != null)
+                            {
+                                <p>Ihale kapanmıştır</p>
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+    }
+</div>
+

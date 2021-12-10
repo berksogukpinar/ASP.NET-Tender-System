@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<h1 style="text-align:center">Diniz Adient İhale Sistemine Hoşgeldiniz </h1>
+<div class="row">
+    <div class="text-center" style="margin-bottom:40px;">
+        <h2 style="color:red;text-align:center">@TempData["message"]</h2>
+    </div>
+    <div class="col-md-4">
+
+        @if (Session["token"] != null && Session["id"] != null && Session["pwd"] == null)
+        {
+            using (Html.BeginForm("Login", "Home", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="container" style="text-align:center">
+                    <input pattern=".{3,20}" title="En fazla 20 karakter" class="form-control" style="margin:auto" type="password" name="Password" placeholder="Şifrenizi giriniz" /> <br /> <br />
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-start-order">Giriş Yap</button>
+                    </div>
+                </div>
+            }
+        }
+
+        else if (Session["pwd"] != null)
+        {
+            <h2>Hoşgeldiniz, profilinizden ihalelerinizi ve bilgilerinizi görebilirsiniz</h2>
+        }
+
+        else
+        {
+            using (Html.BeginForm("Login", "Home", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="container" style="text-align:center">
+                    <input pattern=".{3,20}" title="En fazla 20 karakter" class="form-control" style="margin:auto" type="text" name="Username" placeholder="Kullanıcı adı" /> <br /> <br />
+                    <input pattern=".{3,20}" title="En fazla 20 karakter" class="form-control" style="margin:auto" type="password" name="Password" placeholder="Şifre" /> <br /> <br />
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-start-order">Giriş Yap</button>
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+    </div>
+</div>
+
+<script>
+    
+    window.history.replaceState({}, "foo", '/Home/Index');
+    
+</script>

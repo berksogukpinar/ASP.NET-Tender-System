@@ -1,0 +1,346 @@
+﻿@model IhaleProject.Models.Supplier
+@using IhaleProject.Models;
+@using System.Collections.Generic;
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+    if (ViewBag.hata != null)
+    {
+        Html.Raw(ViewBag.hata);
+    }
+}
+<div>
+    @{
+        if (ViewData["profile"] != null)
+        {
+            if (ViewData.Values != null && ViewData.Values.Count() > 0)
+            {
+                foreach (var item in ViewData["profile"] as List<Supplier>)
+                {
+                    if (item.IsAdmin == false)
+                    {
+                        <div class="page-content page-container" id="page-content">
+                            <div class="padding">
+                                <div class="row container d-flex justify-content-center">
+                                    <div class="col-xl-6 col-md-12">
+                                        <div class="card1 user-card-full">
+                                            <div class="row m-l-0 m-r-0" style="background:white">
+                                                <div class="col-sm-4  user-profile" style="background-color: #97BAC2; ">
+                                                    <div class="card-block text-center text-white">
+                                                        <div class="m-b-25"> <img src="https://img.icons8.com/bubbles/100/000000/user.png" class="img-radius" alt="User-Profile-Image"> </div>
+                                                        <h6 class="f-w-600"> @item.CompanyName</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="card-block">
+                                                        <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Bilgiler</h6>
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <p class="m-b-10 f-w-600">Email</p>
+                                                                <h6 class="text-muted f-w-400">@item.Email</h6>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <p class="m-b-10 f-w-600">Telefon</p>
+                                                                <h6 class="text-muted f-w-400">@item.Phone</h6>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <p class="m-b-10 f-w-600">Fax</p>
+                                                                <h6 class="text-muted f-w-400">@item.Fax</h6>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <p class="m-b-10 f-w-600">Adres</p>
+                                                                <h6 class="text-muted f-w-400">@item.Address</h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        if ((ViewData["supplierOffers"] as List<Offer>).Count == 0)
+                        {
+                            <h3 style="text-align:center">Aktif teklifiniz bulunmamaktadır.</h3>
+                        }
+                        else
+                        {
+                            <h3 style="margin:auto;text-align:center">Aktif Olan Teklifleriniz</h3>
+                            <br />
+                            <table class="styled-table" style="border-radius =10px; ">
+                                <tr style="background-color: #97A3C2; border-radius: 20px;">
+                                    <th>İhale İsmi</th>
+                                    <th>Miktar</th>
+                                    <th>Teklif Açıklamanız</th>
+                                    <th>Teklif Bedeli</th>
+                                    <th>Birim Fiyatı</th>
+                                    <th>Gönderdiğiniz Döküman</th>
+                                    <th>Sıranız</th>
+                                    <th>İşlem</th>
+                                </tr>
+
+                                @foreach (var item1 in ViewData["supplierOffers"] as List<Offer>)
+                                {
+
+                                    if (item1.IsActiveOffer == true || item1.IsActiveOffer == null && item1.Ihale.IsActive == true)
+                                    {
+                                        <tr>
+                                            <td>@item1.Ihale.IhaleName</td>
+                                            <td>@item1.Ihale.IhaleAdet @item1.Ihale.IhaleAdetCins</td>
+                                            <td>@item1.OfferDescription</td>
+                                            <td>@item1.OfferPrice @item1.OfferCurrency</td>
+                                            <td>
+                                                @{
+                                                    var a = item1.OfferPrice;
+                                                    var b = item1.Ihale.IhaleAdet;
+                                                    var c = a / b;
+                                                    <p>@c @item1.OfferCurrency</p>
+                                                }
+                                            </td>
+                                            <td>
+
+                                                @if (item1.OfferImage != null)
+                                                {
+                                                    <a href="~/Uploads/@item1.OfferImage">İndir</a>
+                                                }
+                                                else
+                                                {
+                                                    <p>Döküman gönderilmedi.</p>
+                                                }
+                                            </td>
+                                            <td>
+
+                                                @if (ViewData["siralama"] != null)
+                                                {
+
+                                                    var siralama = ViewData["siralama"];
+                                                    foreach (var item3 in ViewData["siralama"] as Dictionary<int, int>)
+                                                    {
+                                                        if (item3.Key == item1.OfferId)
+                                                        {
+                                                            <p>@item3.Value</p>
+                                                        }
+                                                    }
+
+                                                }
+                                            </td>
+                                            <td>
+
+                                                @if ((Session["token"] != null || Session["username"] != null))
+                                                {
+                                                    using (Html.BeginForm("DeleteOffer", "Home", FormMethod.Post))
+                                                    {
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" value=@item1.OfferId name="OfferId" />
+                                                        <button type="submit" class="btn btn-light" title="Aktiflikten çıkar">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
+                                                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
+                                                            </svg>
+                                                        </button>
+                                                    }
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </table>
+                        }
+                        <br />
+                        <hr />
+
+                        if ((ViewData["notActiveOffers"] as List<Offer>).Count == 0)
+                        {
+                            <h3 style="text-align:center">Aktif olmayan teklifiniz bulunmamaktadır.</h3>
+                        }
+                        else
+                        {
+                            <h3 style="margin:auto;text-align:center">Aktif olmayan teklifleriniz</h3> <br />
+                            <table class="styled-table">
+                                <tr style="background-color: #97A3C2;">
+                                    <th>İhale İsmi</th>
+                                    <th>Miktar</th>
+                                    <th>Teklif Açıklamanız</th>
+                                    <th>Teklif Bedeli</th>
+                                    <th>Birim Fiyatı</th>
+                                    <th>Gönderdiğiniz Döküman</th>
+                                    <th>İşlem</th>
+                                </tr>
+                                @{ var i = 0;}
+                                @foreach (var item2 in ViewData["notActiveOffers"] as List<Offer>)
+                                {
+                                    <tr>
+                                        <td>@item2.Ihale.IhaleName</td>
+                                        <td>@item2.Ihale.IhaleAdet @item2.Ihale.IhaleAdetCins</td>
+                                        <td>@item2.OfferDescription</td>
+                                        <td>@item2.OfferPrice @item2.OfferCurrency</td>
+                                        <td>
+                                            @{
+                                                var a = item2.OfferPrice;
+                                                var b = item2.Ihale.IhaleAdet;
+                                                var c = a / b;
+                                                <p>@c @item2.OfferCurrency</p>
+                                            }
+                                        </td>
+                                        <td>
+
+                                            @if (item2.OfferImage != null)
+                                            {
+                                                <a href="~/Uploads/@item2.OfferImage">İndir</a>
+                                            }
+                                            else
+                                            {
+                                                <p>Döküman gönderilmedi.</p>
+                                            }
+                                        </td>
+
+                                        @if (item2.Ihale.IsActive == true)
+                                        {
+                                            <td>
+
+                                                @if ((Session["token"] != null || Session["username"] != null) && item2.Ihale.IsActive == true)
+                                                {
+                                                    using (Html.BeginForm("ReturnOffer", "Home", FormMethod.Post))
+                                                    {
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" value=@item2.OfferId name="OfferId" />
+                                                        <input type="hidden" value=@item2.IhaleId name="IhaleId" />
+                                                        <button type="submit" class="btn btn-light" title="Aktif hale getir">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
+                                                                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
+                                                            </svg>
+                                                        </button>
+                                                    }
+                                                }
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>Ihale aktif değil.</td>
+                                        }
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    }
+                }
+            }
+        }
+
+        if (ViewData["tumIhaleler"] != null && Session["isAdmin"] != null)
+        {
+            <div class="text-center">
+                <button class="btn btn-start-order" style="text-align:center">@Html.ActionLink("Ihale Oluştur +", "IhaleOlustur", "Home")</button>
+            </div>
+
+            using (Html.BeginForm("FilterIhale", "Home", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="row" style="text-align:center;margin:40px 0px 30px 0px;">
+
+                    <div class="form-group" style="display: inline-block;">
+                        <label class="form-label" style="color:black" for="name">İhale Durumu</label> <br />
+                        <select class="form-control" style="margin:auto" required id="cins" name="ihaleCondition">
+                            <option value="all">Tüm İhaleler</option>
+                            <option value="active">Aktif İhaleler</option>
+                            <option value="inactive">İnaktif İhaleler</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="display: inline-block;">
+                        <label class="form-label" style="color:black" for="name">Filtre</label> <br />
+                        <select class="form-control" style="margin:auto" required id="cins" name="filter">
+                            <option value="none">Filtre yok</option>
+                            <option value="aToZ">İhale ismi A'dan Z'ye</option>
+                            <option value="zToA">İhale ismi Z'den A'ya</option>
+                            <option value="oldToNew">İhale Kayıt (Eskiden Yeniye)</option>
+                            <option value="newToOld">İhale Kayıt (Yeniden Eskiye)</option>
+                        </select>
+                    </div>
+
+                    <div class="text-center" style="display:inline-block;">
+                        <button type="submit" class="btn btn-start-order" style="font-size:10px;padding:auto">Uygula</button>
+                    </div>
+                </div>
+            }
+            <h3 style="margin:20px 20px;text-align:center">@TempData["filtre"]</h3>
+            <table class="styled-table">
+                <tr style="background-color: #97A3C2;">
+                    <th>Ihale ismi</th>
+                    <th>Miktar</th>
+                    <th>Gönderdiğiniz Döküman</th>
+                    <th>Aktiflik Durumu</th>
+                    <th>Kazanan tedarikçi</th>
+                    <th>Bitiş Zamanı</th>
+                    <th>İşlemler</th>
+                </tr>
+
+                @foreach (var item1 in ViewData["tumIhaleler"] as List<Ihale>)
+                {
+                    <tr>
+                        <td>@Html.ActionLink(@item1.IhaleName, "IhaleDetaylar", "Home", new { id = item1.IhaleId }, null)</td>
+                        <td>@item1.IhaleAdet @item1.IhaleAdetCins</td>
+                        <td>
+
+                            @if (item1.IhaleImage != null)
+                            {
+                                <a href="~/Uploads/@item1.IhaleImage">İndir</a>
+                            }
+                            else
+                            {
+                                <p>Döküman gönderilmedi.</p>
+                            }
+                        </td>
+                        <td>@(item1.IsActive == true ? "Ihale açık" : "Ihale aktif değil")</td>
+                        <td>@(item1.WinnerSupplierId != null ? @item1.Supplier.CompanyName : "Henüz kazanan yok.") </td>
+                        <td>
+
+                            @if (item1.IhaleLastTime != null)
+                            {
+                                <p>@item1.IhaleLastTime</p>
+                            }
+                            else
+                            {
+                                <p>
+                                    Bitiş tarihi girilmedi.
+                                </p>
+                            }
+                        </td>
+                        <td>
+
+                            @using (Html.BeginForm("IhaleSil", "Home", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" value=@item1.IhaleId name="ihaleId" />
+
+                                <button class="btn btn-start-order3" style="@(item1.IsActive != true ? "color:red" : "color:green")">Aktiflik Durumunu Değİştİr</button>
+                            }
+                            <br />
+
+                            @using (Html.BeginForm("IhaleDuzenle", "Home", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <div class="form-group">
+                                    <input type="hidden" value=@item1.IhaleId name="ihaleId" />
+                                    <button class="btn btn-start-order3" style="color:blue; width:100%">Düzenle</button>
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+    }
+</div>
+
